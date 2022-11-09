@@ -12,6 +12,7 @@ import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { User } from '../schemas/user.entity';
+import { ValidationUtil } from '../utils/validations.util';
 
 @ApiTags('Users')
 @Controller('users')
@@ -30,6 +31,7 @@ export class UsersController {
 
   @Get(':id')
   public async findOne(@Param('id') id: string): Promise<User> {
+    ValidationUtil.validId(id);
     return this.usersService.findOne(id);
   }
 
@@ -38,11 +40,13 @@ export class UsersController {
     @Param('id') id: string,
     @Body() updateUserDto: UpdateUserDto,
   ): Promise<any> {
+    ValidationUtil.validId(id);
     return this.usersService.update(id, updateUserDto);
   }
 
   @Delete(':id')
   public async remove(@Param('id') id: string): Promise<any> {
+    ValidationUtil.validId(id);
     return this.usersService.remove(id);
   }
 }
